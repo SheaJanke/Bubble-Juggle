@@ -3,20 +3,22 @@ package com.example.testing;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import java.util.LinkedList;
+
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
-    private Ball ball;
+    LinkedList<Ball> balls;
     private boolean running;
     private static Canvas canvas;
     private int targetFPS = 60;
     private double averageFPS;
 
-    public MainThread(SurfaceHolder surfaceHolder, GameView gameView, Ball ball){
+    public MainThread(SurfaceHolder surfaceHolder, GameView gameView, LinkedList<Ball> balls){
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
-        this.ball = ball;
+        this.balls = balls;
     }
 
     public void setRunning(boolean isRunning){
@@ -39,7 +41,9 @@ public class MainThread extends Thread {
             try{
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized ((surfaceHolder)){
-                    this.ball.setCanvas(canvas);
+                    for(Ball ball:balls){
+                        ball.setCanvas(canvas);
+                    }
                     this.gameView.update();
                     this.gameView.draw(canvas);
                 }

@@ -8,11 +8,14 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
+import java.util.LinkedList;
+
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private MainThread thread;
-    private Ball ball = new Ball(100);
+    LinkedList<Ball> balls = new LinkedList<Ball>();
+    Ball ball = new Ball(100);
     Context context;
 
     public GameView(Context context){
@@ -21,7 +24,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         getHolder().addCallback(this);
 
-        thread = new MainThread(getHolder(), this, ball);
+        balls.add(ball);
+        thread = new MainThread(getHolder(), this, balls);
         setFocusable(true);
 
     }
@@ -51,7 +55,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update(){
-        ball.update();
+        for(Ball bal:balls){
+            bal.update();
+        }
     }
 
     @Override
@@ -61,14 +67,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             canvas.drawColor(Color.WHITE);
             Paint paint = new Paint();
             paint.setColor(Color.rgb(250,0,0));
-            ball.draw(paint, canvas);
+            for(Ball bal: balls) {
+                bal.draw(paint, canvas);
+            }
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(ball.inArea((int)e.getX(),(int)e.getY())){
-            ball.hit();
+        boolean newBall = false;
+        for(Ball bal: balls){
+            if(bal.inArea((int)e.getX(),(int)e.getY())) {
+                bal.hit();
+                newBall = true;
+
+            }
+        }
+        if(newBall == true){
+            balls.add(new Ball(100));
         }
 
         //Toast.makeText(context,"test" , Toast.LENGTH_SHORT).show();
