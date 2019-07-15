@@ -3,6 +3,7 @@ package com.example.testing;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+
 public class Ball {
     private int radius;
     private float x;
@@ -56,6 +57,7 @@ public class Ball {
     public void hit(){
         if(velY > 0){
             velY = -(velY*0.5 + 15);
+            velX += (Math.random()-0.5)*15;
         }
     }
 }

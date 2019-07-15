@@ -14,6 +14,7 @@ import java.util.LinkedList;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private MainThread thread;
+    private long lastTime = System.currentTimeMillis();
     LinkedList<Ball> balls = new LinkedList<Ball>();
     Ball ball = new Ball(100);
     Context context;
@@ -67,6 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             canvas.drawColor(Color.WHITE);
             Paint paint = new Paint();
             paint.setColor(Color.rgb(250,0,0));
+            paint.setTextSize(20);
             for(Ball bal: balls) {
                 bal.draw(paint, canvas);
             }
@@ -75,16 +77,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        boolean newBall = false;
-        for(Ball bal: balls){
-            if(bal.inArea((int)e.getX(),(int)e.getY())) {
-                bal.hit();
-                newBall = true;
+        if(System.currentTimeMillis() - lastTime > 100) {
+            boolean newBall = false;
+            for (Ball bal : balls) {
+                if (bal.inArea((int) e.getX(), (int) e.getY())) {
+                    lastTime = System.currentTimeMillis();
+                    bal.hit();
+                    newBall = true;
 
+                }
             }
-        }
-        if(newBall == true){
-            balls.add(new Ball(100));
+            if (newBall == true) {
+                balls.add(new Ball(100));
+            }
         }
 
         //Toast.makeText(context,"test" , Toast.LENGTH_SHORT).show();
