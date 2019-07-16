@@ -15,8 +15,7 @@ public class Ball {
     private double velY;
     private double accel;
     private Canvas canvas;
-    private int[] ballColors = {Color.GREEN, Color.RED
-            , Color.BLUE};
+    private int[] ballColors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW};
     private int color;
 
     public Ball(int radius){
@@ -44,6 +43,24 @@ public class Ball {
         if(x < (0 + radius/2) || x > (canvas.getWidth() - radius/2)){
             velX = -velX;
         }
+        for(Ball other: others){
+            if(other.getX() != x && other.getY() != y){
+                if(touchingBall(other) && color != other.getColor()){
+                    if(x > other.getX() && velX < 0){
+                        velX = -velX/1.25;
+                    }
+                    if(x < other.getX() && velX > 0){
+                        velX = -velX/1.25;
+                    }
+                    if(y > other.getY() && velY < 0){
+                        velY = -velY/1.25;
+                    }
+                    if(y < other.getY() && velY > 0){
+                        velY = -velY/1.25;
+                    }
+                }
+            }
+        }
     }
 
     public void draw(){
@@ -69,4 +86,24 @@ public class Ball {
             velX += (Math.random()-0.5)*15;
         }
     }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public boolean touchingBall(Ball other){
+        if(Math.pow(other.getX()-x,2) + Math.pow(other.getY()-y,2) < Math.pow(radius*2,2)){
+            return true;
+        }
+        return false;
+    }
+
 }

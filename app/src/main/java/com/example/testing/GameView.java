@@ -88,8 +88,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                 balls.add(new Ball(100));
             }
         }
-
-        //Toast.makeText(context,"test" , Toast.LENGTH_SHORT).show();
         return true;
     }
 
