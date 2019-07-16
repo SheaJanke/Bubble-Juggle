@@ -1,7 +1,10 @@
 package com.example.testing;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+
+import java.util.LinkedList;
 
 
 public class Ball {
@@ -12,6 +15,9 @@ public class Ball {
     private double velY;
     private double accel;
     private Canvas canvas;
+    private int[] ballColors = {Color.GREEN, Color.RED
+            , Color.BLUE};
+    private int color;
 
     public Ball(int radius){
         this.radius = radius;
@@ -20,13 +26,14 @@ public class Ball {
         velX = 5;
         velY = 0;
         accel = 0.5;
+        color = (int)(Math.random()* ballColors.length);
     }
 
     public void setCanvas(Canvas canvas){
         this.canvas = canvas;
     }
 
-    public void update(){
+    public void update(LinkedList<Ball> others){
         velY += accel;
         y += velY;
         x += velX;
@@ -39,7 +46,9 @@ public class Ball {
         }
     }
 
-    public void draw(Paint paint, Canvas canvaa){
+    public void draw(){
+        Paint paint = new Paint();
+        paint.setColor(ballColors[color]);
         canvas.drawCircle(x,y,radius,paint);
     }
 

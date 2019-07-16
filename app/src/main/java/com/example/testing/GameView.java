@@ -57,7 +57,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update(){
         for(Ball bal:balls){
-            bal.update();
+            bal.update(balls);
         }
     }
 
@@ -66,11 +66,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
         if(canvas != null){
             canvas.drawColor(Color.WHITE);
-            Paint paint = new Paint();
-            paint.setColor(Color.rgb(250,0,0));
-            paint.setTextSize(20);
             for(Ball bal: balls) {
-                bal.draw(paint, canvas);
+                bal.draw();
             }
         }
     }
