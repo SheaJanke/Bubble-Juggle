@@ -3,7 +3,6 @@ package com.example.testing;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
@@ -15,8 +14,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private MainThread thread;
     private long lastTime = System.currentTimeMillis();
-    LinkedList<Ball> balls = new LinkedList<Ball>();
-    Ball ball = new Ball(100);
+    private long newBallTimer = System.currentTimeMillis();
+    LinkedList<Ball> balls = new LinkedList<>();
     Context context;
 
     public GameView(Context context){
@@ -24,8 +23,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         this.context = context;
 
         getHolder().addCallback(this);
-
-        balls.add(ball);
+        addBall(100);
         thread = new MainThread(getHolder(), this, balls);
         setFocusable(true);
 
@@ -56,8 +54,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update(){
-        for(Ball bal:balls){
-            bal.update(balls);
+        for(Ball ball:balls){
+            ball.update(balls);
+        }
+        if(System.currentTimeMillis() - newBallTimer > 3000){
+            newBallTimer = System.currentTimeMillis();
+            addBall(100);
         }
     }
 
@@ -66,8 +68,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
         if(canvas != null){
             canvas.drawColor(Color.WHITE);
-            for(Ball bal: balls) {
-                bal.draw();
+            for(Ball ball: balls) {
+                ball.draw();
             }
         }
     }
@@ -75,20 +77,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(System.currentTimeMillis() - lastTime > 100) {
-            boolean newBall = false;
-            for (Ball bal : balls) {
-                if (bal.inArea((int) e.getX(), (int) e.getY())) {
+            for (Ball ball : balls) {
+                if (ball.inArea((int) e.getX(), (int) e.getY())) {
                     lastTime = System.currentTimeMillis();
-                    bal.hit();
-                    newBall = true;
+                    ball.hit();
 
                 }
             }
-            if (newBall == true) {
-                balls.add(new Ball(100));
-            }
         }
         return true;
+    }
+
+    public void addBall(int radius){
+        Ball newBall = new Ball(radius);
+        balls.add(newBall);
     }
 
 }

@@ -24,7 +24,7 @@ public class Ball {
         y = 100f;
         velX = 5;
         velY = 0;
-        accel = 0.5;
+        accel = 0.25;
         color = (int)(Math.random()* ballColors.length);
     }
 
@@ -40,24 +40,30 @@ public class Ball {
             y = canvas.getHeight()-(radius/2);
             velY = -(velY);
         }
-        if(x < (0 + radius/2) || x > (canvas.getWidth() - radius/2)){
-            velX = -velX;
+        if(x < (0 + radius/2)){
+            x = radius/2;
+            velX = -velX/1.25;
+        }
+        if(x > canvas.getWidth() - radius/2){
+            x = canvas.getWidth() - radius/2;
+            velX = -velX/1.25;
         }
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
                 if(touchingBall(other) && color != other.getColor()){
                     if(x > other.getX() && velX < 0){
-                        velX = -velX/1.25;
+                        velX = -velX/2;
                     }
                     if(x < other.getX() && velX > 0){
-                        velX = -velX/1.25;
+                        velX = -velX/2;
                     }
                     if(y > other.getY() && velY < 0){
-                        velY = -velY/1.25;
+                        velY = -velY/2;
                     }
                     if(y < other.getY() && velY > 0){
-                        velY = -velY/1.25;
+                        velY = -velY/2;
                     }
+                    correctPosition(other);
                 }
             }
         }
@@ -66,6 +72,7 @@ public class Ball {
     public void draw(){
         Paint paint = new Paint();
         paint.setColor(ballColors[color]);
+        paint.setTextSize(40);
         canvas.drawCircle(x,y,radius,paint);
     }
 
@@ -82,9 +89,10 @@ public class Ball {
 
     public void hit(){
         if(velY > 0){
-            velY = -(velY*0.5 + 15);
+            velY = -(velY*0.5);
             velX += (Math.random()-0.5)*15;
         }
+        velY -= 10;
     }
 
     public float getX() {
@@ -93,6 +101,14 @@ public class Ball {
 
     public float getY() {
         return y;
+    }
+
+    public double getVelY() {
+        return velY;
+    }
+
+    public double getVelX() {
+        return velX;
     }
 
     public int getColor() {
@@ -104,6 +120,22 @@ public class Ball {
             return true;
         }
         return false;
+    }
+
+    public void correctPosition(Ball other){
+        float difX = Math.abs(x-other.getX());
+        float difY = Math.abs(y-other.getY());
+        double angle = Math.atan(difY/difX);
+        if(x > other.getX()){
+            x = other.getX() + (float)Math.cos(angle)*radius*2;
+        }else{
+            x = other.getX() - (float)Math.cos(angle)*radius*2;
+        }
+        if(y > other.getY()){
+            y = other.getY() + (float)Math.sin(angle)*radius*2;
+        }else{
+            y = other.getY() - (float)Math.sin(angle)*radius*2;
+        }
     }
 
 }

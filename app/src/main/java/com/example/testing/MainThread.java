@@ -77,8 +77,4 @@ public class MainThread extends Thread {
             }
         }
     }
-
-    public Canvas getCanvas(){
-        return canvas;
-    }
 }
