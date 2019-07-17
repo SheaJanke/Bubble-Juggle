@@ -24,7 +24,7 @@ public class Ball {
         y = 100f;
         velX = 5;
         velY = 0;
-        accel = 0.25;
+        accel = 0.5;
         color = (int)(Math.random()* ballColors.length);
     }
 
