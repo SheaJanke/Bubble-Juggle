@@ -36,10 +36,6 @@ public class Ball {
         velY += accel;
         y += velY;
         x += velX;
-        if((y > (canvas.getHeight() - radius/2))&&(velY >0)){
-            y = canvas.getHeight()-(radius/2);
-            velY = -(velY);
-        }
         if(x < (0 + radius/2)){
             x = radius/2;
             velX = -velX/1.25;
@@ -51,6 +47,7 @@ public class Ball {
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
                 if(touchingBall(other) && color != other.getColor()){
+                    double totalVelY = Math.abs(velY) + Math.abs(other.getVelY());
                     if(x > other.getX() && velX < 0){
                         velX = -velX/2;
                     }
@@ -58,10 +55,11 @@ public class Ball {
                         velX = -velX/2;
                     }
                     if(y > other.getY() && velY < 0){
-                        velY = -velY/2;
+                        velY += (1.0/3.0)*totalVelY;
                     }
                     if(y < other.getY() && velY > 0){
-                        velY = -velY/2;
+                        velY -= (2.0/3.0)*totalVelY;
+
                     }
                     correctPosition(other);
                 }
@@ -88,11 +86,12 @@ public class Ball {
     }
 
     public void hit(){
+        double addVelY = 0;
         if(velY > 0){
-            velY = -(velY*0.5);
+            addVelY = -(velY*0.5);
             velX += (Math.random()-0.5)*15;
         }
-        velY -= 10;
+        velY = -30;
     }
 
     public float getX() {
@@ -136,6 +135,13 @@ public class Ball {
         }else{
             y = other.getY() - (float)Math.sin(angle)*radius*2;
         }
+    }
+
+    public boolean outOfBounds(){
+        if(y > canvas.getHeight()+radius){
+            return true;
+        }
+        return false;
     }
 
 }

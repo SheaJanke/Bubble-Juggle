@@ -56,6 +56,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public void update(){
         for(Ball ball:balls){
             ball.update(balls);
+            if(ball.outOfBounds()){
+                balls.remove(ball);
+            }
         }
         if(System.currentTimeMillis() - newBallTimer > 3000){
             newBallTimer = System.currentTimeMillis();
