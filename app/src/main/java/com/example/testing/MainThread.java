@@ -14,14 +14,14 @@ public class MainThread extends Thread {
     private int targetFPS = 60;
     private double averageFPS;
 
-    public MainThread(SurfaceHolder surfaceHolder, GameView gameView, LinkedList<Ball> balls){
+    MainThread(SurfaceHolder surfaceHolder, GameView gameView, LinkedList<Ball> balls){
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
         this.balls = balls;
     }
 
-    public void setRunning(boolean isRunning){
+    void setRunning(boolean isRunning){
         running = isRunning;
     }
 
@@ -76,5 +76,9 @@ public class MainThread extends Thread {
                 System.out.println(averageFPS);
             }
         }
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 }

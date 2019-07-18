@@ -1,6 +1,7 @@
 package com.example.testing;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private long lastTime = System.currentTimeMillis();
     private long newBallTimer = System.currentTimeMillis();
     LinkedList<Ball> balls = new LinkedList<>();
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    //private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     Context context;
 
     public GameView(Context context){
@@ -23,9 +26,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         this.context = context;
 
         getHolder().addCallback(this);
-        addBall(100);
         thread = new MainThread(getHolder(), this, balls);
         setFocusable(true);
+        addBall(width/8);
 
     }
     @Override
@@ -55,16 +58,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update(){
         for(Ball ball:balls){
-            ball.update(balls);
+            ball.calculate(balls);
             if(ball.outOfBounds()){
                 balls.remove(ball);
             }
         }
+        for(Ball ball:balls){
+            ball.updateVel();
+        }
         if(System.currentTimeMillis() - newBallTimer > 3000){
             newBallTimer = System.currentTimeMillis();
-            addBall(100);
+            addBall(width/8);
         }
     }
+
 
     @Override
     public void draw(Canvas canvas){

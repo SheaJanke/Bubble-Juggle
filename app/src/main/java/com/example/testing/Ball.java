@@ -7,58 +7,61 @@ import android.graphics.Paint;
 import java.util.LinkedList;
 
 
-public class Ball {
+class Ball {
     private int radius;
     private float x;
     private float y;
     private double velX;
     private double velY;
+    private double newVelX;
+    private double newVelY;
     private double accel;
     private Canvas canvas;
     private int[] ballColors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW};
     private int color;
 
-    public Ball(int radius){
+    Ball(int radius){
         this.radius = radius;
-        x = 100f;
-        y = 100f;
+        x = 300f;
+        y = 300f;
         velX = 5;
         velY = 0;
         accel = 0.5;
+        newVelX = velX;
         color = (int)(Math.random()* ballColors.length);
     }
 
-    public void setCanvas(Canvas canvas){
+    void setCanvas(Canvas canvas){
         this.canvas = canvas;
     }
 
-    public void update(LinkedList<Ball> others){
-        velY += accel;
+    void calculate(LinkedList<Ball> others){
         y += velY;
         x += velX;
-        if(x < (0 + radius/2)){
-            x = radius/2;
-            velX = -velX/1.25;
+        newVelY = velY + accel;
+        if(x < radius/2.0){
+            x = radius/2.0f;
+            newVelX = -velX/1.25;
         }
         if(x > canvas.getWidth() - radius/2){
-            x = canvas.getWidth() - radius/2;
-            velX = -velX/1.25;
+            x = canvas.getWidth() - radius/2f;
+            newVelX = -velX/1.25;
         }
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
                 if(touchingBall(other) && color != other.getColor()){
                     double totalVelY = Math.abs(velY) + Math.abs(other.getVelY());
                     if(x > other.getX() && velX < 0){
-                        velX = -velX/2;
+                        newVelX = -velX/2;
                     }
                     if(x < other.getX() && velX > 0){
-                        velX = -velX/2;
+                        newVelX = -velX/2;
                     }
                     if(y > other.getY() && velY < 0){
-                        velY += (1.0/3.0)*totalVelY;
+                        newVelY += (3.0/5)*totalVelY;
                     }
                     if(y < other.getY() && velY > 0){
-                        velY -= (2.0/3.0)*totalVelY;
+                        newVelY = -(3.0/5)*totalVelY;
 
                     }
                     correctPosition(other);
@@ -67,7 +70,12 @@ public class Ball {
         }
     }
 
-    public void draw(){
+    void updateVel(){
+        velX = newVelX;
+        velY = newVelY;
+    }
+
+    void draw(){
         Paint paint = new Paint();
         paint.setColor(ballColors[color]);
         paint.setTextSize(40);
@@ -75,53 +83,38 @@ public class Ball {
     }
 
 
-    public boolean inArea(int X, int Y){
+    boolean inArea(int X, int Y){
         int a = (int)x;
         int b = (int)y;
-        if((X-a)*(X-a) + (Y-b)*(Y-b) < radius * radius){
-            return true;
-        }else{
-            return false;
-        }
+        return (X - a) * (X - a) + (Y - b) * (Y - b) < radius * radius;
     }
 
-    public void hit(){
-        double addVelY = 0;
-        if(velY > 0){
-            addVelY = -(velY*0.5);
-            velX += (Math.random()-0.5)*15;
-        }
-        velY = -30;
+    void hit(){
+        velX += (Math.random()-0.5)*25;
+        velY = -40;
     }
 
-    public float getX() {
+    private float getX() {
         return x;
     }
 
-    public float getY() {
+    private float getY() {
         return y;
     }
 
-    public double getVelY() {
+    private double getVelY() {
         return velY;
     }
 
-    public double getVelX() {
-        return velX;
-    }
-
-    public int getColor() {
+    private int getColor() {
         return color;
     }
 
-    public boolean touchingBall(Ball other){
-        if(Math.pow(other.getX()-x,2) + Math.pow(other.getY()-y,2) < Math.pow(radius*2,2)){
-            return true;
-        }
-        return false;
+    private boolean touchingBall(Ball other){
+        return Math.pow(other.getX() - x, 2) + Math.pow(other.getY() - y, 2) < Math.pow(radius * 2, 2);
     }
 
-    public void correctPosition(Ball other){
+    private void correctPosition(Ball other){
         float difX = Math.abs(x-other.getX());
         float difY = Math.abs(y-other.getY());
         double angle = Math.atan(difY/difX);
@@ -137,11 +130,8 @@ public class Ball {
         }
     }
 
-    public boolean outOfBounds(){
-        if(y > canvas.getHeight()+radius){
-            return true;
-        }
-        return false;
+    boolean outOfBounds(){
+        return y > canvas.getHeight()+radius;
     }
 
 }
