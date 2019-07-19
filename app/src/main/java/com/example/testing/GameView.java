@@ -14,11 +14,10 @@ import java.util.LinkedList;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private MainThread thread;
-    private long lastTime = System.currentTimeMillis();
     private long newBallTimer = System.currentTimeMillis();
     LinkedList<Ball> balls = new LinkedList<>();
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-    //private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     Context context;
 
     public GameView(Context context){
@@ -66,7 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         for(Ball ball:balls){
             ball.updateVel();
         }
-        if(System.currentTimeMillis() - newBallTimer > 3000){
+        if(System.currentTimeMillis() - newBallTimer > 3000 && spawnClear()){
             newBallTimer = System.currentTimeMillis();
             addBall(width/8);
         }
@@ -86,12 +85,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(System.currentTimeMillis() - lastTime > 100) {
+        if(e.getY() > height/2) {
             for (Ball ball : balls) {
                 if (ball.inArea((int) e.getX(), (int) e.getY())) {
-                    lastTime = System.currentTimeMillis();
                     ball.hit();
-
                 }
             }
         }
@@ -102,5 +99,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         Ball newBall = new Ball(radius);
         balls.add(newBall);
     }
+
+    private boolean spawnClear(){
+        for(Ball ball:balls){
+            if(ball.touchingBall(new Ball(width/8))){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

@@ -3,12 +3,15 @@ package com.example.testing;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 
 import java.util.LinkedList;
 
 
 class Ball {
     private int radius;
+    private long lastHit;
     private float x;
     private float y;
     private double velX;
@@ -29,6 +32,7 @@ class Ball {
         accel = 0.5;
         newVelX = velX;
         color = (int)(Math.random()* ballColors.length);
+        lastHit = System.currentTimeMillis();
     }
 
     void setCanvas(Canvas canvas){
@@ -61,8 +65,17 @@ class Ball {
                         newVelY += (3.0/5)*totalVelY;
                     }
                     if(y < other.getY() && velY > 0){
-                        newVelY = -(3.0/5)*totalVelY;
-
+                        if(other.getVelY() < 0) {
+                            newVelY = -(3.0 / 5) * totalVelY;
+                        }else{
+                            newVelY = -(3.0/5) * velY;
+                        }
+                    }
+                    if(y > other.getY() && velY > 0){
+                        newVelY += (1.0/5.0)*other.getVelY();
+                    }
+                    if(y < other.getY() && velY < 0){
+                        newVelY += (3.0/5.0)*other.getVelY();
                     }
                     correctPosition(other);
                 }
@@ -77,9 +90,9 @@ class Ball {
 
     void draw(){
         Paint paint = new Paint();
-        paint.setColor(ballColors[color]);
-        paint.setTextSize(40);
-        canvas.drawCircle(x,y,radius,paint);
+        paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,ballColors[color],Shader.TileMode.REPEAT));
+        canvas.drawCircle(x,y,radius-5,paint);
+
     }
 
 
@@ -90,8 +103,11 @@ class Ball {
     }
 
     void hit(){
-        velX += (Math.random()-0.5)*25;
-        velY = -40;
+        if(System.currentTimeMillis()-lastHit > 300) {
+            lastHit = System.currentTimeMillis();
+            velX += (Math.random() - 0.5) * 25;
+            velY = -40;
+        }
     }
 
     private float getX() {
@@ -110,7 +126,7 @@ class Ball {
         return color;
     }
 
-    private boolean touchingBall(Ball other){
+    boolean touchingBall(Ball other){
         return Math.pow(other.getX() - x, 2) + Math.pow(other.getY() - y, 2) < Math.pow(radius * 2, 2);
     }
 
