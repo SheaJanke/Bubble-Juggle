@@ -3,7 +3,6 @@ package com.example.testing;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
@@ -14,10 +13,11 @@ import java.util.LinkedList;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private MainThread thread;
-    private long newBallTimer = System.currentTimeMillis();
-    LinkedList<Ball> balls = new LinkedList<>();
+    private StartScreen startScreen;
+    private MainGame mainGame;
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int gameState = 0;
     Context context;
 
     public GameView(Context context){
@@ -25,10 +25,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         this.context = context;
 
         getHolder().addCallback(this);
-        thread = new MainThread(getHolder(), this, balls);
+        thread = new MainThread(getHolder(), this);
+        startScreen = new StartScreen();
+        mainGame = new MainGame();
         setFocusable(true);
-        addBall(width/8);
-
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
@@ -56,18 +56,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update(){
-        for(Ball ball:balls){
-            ball.calculate(balls);
-            if(ball.outOfBounds()){
-                balls.remove(ball);
-            }
-        }
-        for(Ball ball:balls){
-            ball.updateVel();
-        }
-        if(System.currentTimeMillis() - newBallTimer > 3000 && spawnClear()){
-            newBallTimer = System.currentTimeMillis();
-            addBall(width/8);
+        if(gameState == 0){
+            startScreen.tick();
+        }else if(gameState == 1) {
+            mainGame.tick();
         }
     }
 
@@ -76,38 +68,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public void draw(Canvas canvas){
         super.draw(canvas);
         if(canvas != null){
-            canvas.drawColor(Color.WHITE);
-            for(Ball ball: balls) {
-                ball.draw();
+            if(gameState == 0){
+                startScreen.render(canvas);
+            }else if(gameState == 1){
+               mainGame.render(canvas);
             }
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(e.getY() > height/2) {
-            for (Ball ball : balls) {
-                if (ball.inArea((int) e.getX(), (int) e.getY())) {
-                    ball.hit();
-                }
-            }
+        if(gameState == 0){
+            gameState = 1;
+            mainGame.addBall(width/8);
+        }else if(gameState == 1) {
+            mainGame.touched(e);
         }
         return true;
     }
-
-    public void addBall(int radius){
-        Ball newBall = new Ball(radius);
-        balls.add(newBall);
-    }
-
-    private boolean spawnClear(){
-        for(Ball ball:balls){
-            if(ball.touchingBall(new Ball(width/8))){
-                return false;
-            }
-        }
-        return true;
-    }
-
-
 }

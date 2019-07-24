@@ -8,17 +8,15 @@ import java.util.LinkedList;
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
-    LinkedList<Ball> balls;
     private boolean running;
     private static Canvas canvas;
     private int targetFPS = 60;
     private double averageFPS;
 
-    MainThread(SurfaceHolder surfaceHolder, GameView gameView, LinkedList<Ball> balls){
+    MainThread(SurfaceHolder surfaceHolder, GameView gameView){
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
-        this.balls = balls;
     }
 
     void setRunning(boolean isRunning){
@@ -41,9 +39,6 @@ public class MainThread extends Thread {
             try{
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized ((surfaceHolder)){
-                    for(Ball ball:balls){
-                        ball.setCanvas(canvas);
-                    }
                     this.gameView.update();
                     this.gameView.draw(canvas);
                 }

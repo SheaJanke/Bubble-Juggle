@@ -1,5 +1,6 @@
 package com.example.testing;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +11,8 @@ import java.util.LinkedList;
 
 
 class Ball {
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int radius;
     private long lastHit;
     private float x;
@@ -19,7 +22,6 @@ class Ball {
     private double newVelX;
     private double newVelY;
     private double accel;
-    private Canvas canvas;
     private int[] ballColors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW};
     private int color;
 
@@ -35,10 +37,6 @@ class Ball {
         lastHit = System.currentTimeMillis();
     }
 
-    void setCanvas(Canvas canvas){
-        this.canvas = canvas;
-    }
-
     void calculate(LinkedList<Ball> others){
         y += velY;
         x += velX;
@@ -47,8 +45,8 @@ class Ball {
             x = radius/2.0f;
             newVelX = -velX/1.25;
         }
-        if(x > canvas.getWidth() - radius/2){
-            x = canvas.getWidth() - radius/2f;
+        if(x > width - radius/2){
+            x = width - radius/2f;
             newVelX = -velX/1.25;
         }
         for(Ball other: others){
@@ -88,7 +86,7 @@ class Ball {
         velY = newVelY;
     }
 
-    void draw(){
+    void draw(Canvas canvas){
         Paint paint = new Paint();
         paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,ballColors[color],Shader.TileMode.REPEAT));
         canvas.drawCircle(x,y,radius-5,paint);
@@ -147,7 +145,7 @@ class Ball {
     }
 
     boolean outOfBounds(){
-        return y > canvas.getHeight()+radius;
+        return y > height + radius;
     }
 
 }
