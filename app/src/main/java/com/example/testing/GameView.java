@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
-import java.util.LinkedList;
 
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
@@ -29,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         startScreen = new StartScreen();
         mainGame = new MainGame();
         setFocusable(true);
+        startScreen.reset();
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
@@ -79,11 +79,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(gameState == 0){
-            gameState = 1;
-            mainGame.addBall(width/8);
+            startScreen.touched(e, this);
         }else if(gameState == 1) {
             mainGame.touched(e);
         }
         return true;
+    }
+
+    void setGameState(int gameState){
+        this.gameState = gameState;
     }
 }

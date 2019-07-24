@@ -43,6 +43,7 @@ public class MainThread extends Thread {
                     this.gameView.draw(canvas);
                 }
             }catch(Exception e){
+                e.printStackTrace();
             }
             finally{
                 if(canvas != null){
@@ -58,14 +59,14 @@ public class MainThread extends Thread {
             waitTime = targetTime - timeMillis;
 
             try{
-                this.sleep(waitTime);
+                sleep(waitTime);
             }catch(Exception e){
-
+                e.printStackTrace();
             }
             totalTime += System.nanoTime() - startTime;
             frameCount++;
             if(frameCount == targetFPS){
-                averageFPS = 1000/((totalTime/frameCount)/1000000);
+                averageFPS = (float)(1000/((totalTime/frameCount)/1000000));
                 frameCount = 0;
                 totalTime = 0;
                 System.out.println(averageFPS);

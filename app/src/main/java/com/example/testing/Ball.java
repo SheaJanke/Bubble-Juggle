@@ -25,7 +25,7 @@ class Ball {
     private int[] ballColors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW};
     private int color;
 
-    Ball(int radius){
+    Ball(int radius, float startX, float startY, double startVelX, double startVelY){
         this.radius = radius;
         x = 300f;
         y = 300f;
@@ -108,15 +108,23 @@ class Ball {
         }
     }
 
-    private float getX() {
+    float getX() {
         return x;
     }
 
-    private float getY() {
+    float getY() {
         return y;
     }
 
-    private double getVelY() {
+    void setNewVelY(double newVelY){
+        this.newVelY = newVelY;
+    }
+
+    int getRadius(){
+        return radius;
+    }
+
+    double getVelY() {
         return velY;
     }
 
@@ -147,5 +155,4 @@ class Ball {
     boolean outOfBounds(){
         return y > height + radius;
     }
-
 }
