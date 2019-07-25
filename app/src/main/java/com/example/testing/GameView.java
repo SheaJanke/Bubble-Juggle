@@ -14,6 +14,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private MainThread thread;
     private StartScreen startScreen;
     private MainGame mainGame;
+    private EndScreen endScreen;
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int gameState = 0;
@@ -27,6 +28,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         thread = new MainThread(getHolder(), this);
         startScreen = new StartScreen();
         mainGame = new MainGame();
+        endScreen = new EndScreen();
+
         setFocusable(true);
         startScreen.reset();
     }
@@ -60,6 +63,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             startScreen.tick();
         }else if(gameState == 1) {
             mainGame.tick();
+            if(!mainGame.isAlive()){
+                gameState = 2;
+            }
+        }else if(gameState == 2){
+            endScreen.tick();
         }
     }
 
@@ -72,6 +80,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                 startScreen.render(canvas);
             }else if(gameState == 1){
                mainGame.render(canvas);
+            }else if(gameState == 2){
+                endScreen.render(canvas,mainGame.getScore());
             }
         }
     }
@@ -82,6 +92,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             startScreen.touched(e, this);
         }else if(gameState == 1) {
             mainGame.touched(e);
+        }else if(gameState == 2){
+            endScreen.touched(e);
         }
         return true;
     }

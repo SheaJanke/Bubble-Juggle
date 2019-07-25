@@ -5,11 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 
 import java.util.LinkedList;
 
 class MainGame {
+    private int score = 0;
+    private int lives = 5;
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private LinkedList<Ball> balls = new LinkedList<>();
@@ -20,6 +23,7 @@ class MainGame {
             ball.calculate(balls);
             if (ball.outOfBounds()) {
                 balls.remove(ball);
+                lives--;
             }
         }
         for (Ball ball : balls) {
@@ -29,6 +33,11 @@ class MainGame {
             newBallTimer = System.currentTimeMillis();
             addBall(width / 8);
         }
+        updateScore();
+    }
+
+    boolean isAlive(){
+       return lives > 0;
     }
 
     void render(Canvas canvas){
@@ -36,6 +45,11 @@ class MainGame {
         canvas.drawColor(Color.WHITE);
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);
+        paint.setTextSize(80);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
+        canvas.drawText("Score = " + score, (float)width/2,(float)height/12,paint);
+        canvas.drawText("Lives = " + lives, (float)width/2, (float)height*11/12, paint);
         paint.setPathEffect(new DashPathEffect(new float[]{10,5},0));
         canvas.drawLine(0f,(float)(height/2) ,(float)width, (float)(height/2),paint);
         for(Ball ball: balls) {
@@ -65,5 +79,15 @@ class MainGame {
                 }
             }
         }
+    }
+
+    private void updateScore(){
+        for(int a = 1; a <= balls.size(); a++){
+            score += a;
+        }
+    }
+
+    int getScore(){
+        return score;
     }
 }
