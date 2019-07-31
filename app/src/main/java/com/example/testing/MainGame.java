@@ -45,7 +45,7 @@ class MainGame {
         canvas.drawColor(Color.WHITE);
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(5);
-        paint.setTextSize(80);
+        paint.setTextSize((float)80/1080*width);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         canvas.drawText("Score = " + score, (float)width/2,(float)height/12,paint);
@@ -55,6 +55,7 @@ class MainGame {
         for(Ball ball: balls) {
             ball.draw(canvas);
         }
+
     }
 
     private boolean spawnClear(){
@@ -90,4 +91,11 @@ class MainGame {
     int getScore(){
         return score;
     }
+
+    void reset(){
+        balls.clear();
+        score = 0;
+        lives = 5;
+    }
+
 }

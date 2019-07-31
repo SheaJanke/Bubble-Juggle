@@ -31,7 +31,7 @@ class Ball {
         y = 300f;
         velX = 5;
         velY = 0;
-        accel = 0.5;
+        accel = 0.45/2160*height;
         newVelX = velX;
         color = (int)(Math.random()* ballColors.length);
         lastHit = System.currentTimeMillis();
@@ -104,7 +104,7 @@ class Ball {
         if(System.currentTimeMillis()-lastHit > 300) {
             lastHit = System.currentTimeMillis();
             velX += (Math.random() - 0.5) * 25;
-            velY = -40;
+            velY = -((float)30/2160*height);
         }
     }
 
@@ -114,6 +114,10 @@ class Ball {
 
     float getY() {
         return y;
+    }
+
+    void setY(float y){
+        this.y = y;
     }
 
     void setNewVelY(double newVelY){

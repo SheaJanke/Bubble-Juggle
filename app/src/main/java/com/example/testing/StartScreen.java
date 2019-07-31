@@ -30,7 +30,7 @@ class StartScreen {
     void render(Canvas canvas){
         Paint paint = new Paint();
         canvas.drawColor(Color.WHITE);
-        paint.setTextSize(120);
+        paint.setTextSize((float)120/1080*width);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         paint.setColor(Color.BLUE);
@@ -49,9 +49,10 @@ class StartScreen {
         balls.add(playBall);
     }
 
-    void touched(MotionEvent e, GameView gameView){
+    void touched(MotionEvent e, GameView gameView, MainGame mainGame){
         if(balls.get(0).inArea((int)e.getX(), (int)e.getY())){
             gameView.setGameState(1);
+            mainGame.reset();
         }
     }
 }

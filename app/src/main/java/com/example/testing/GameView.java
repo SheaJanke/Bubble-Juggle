@@ -65,6 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             mainGame.tick();
             if(!mainGame.isAlive()){
                 gameState = 2;
+                endScreen.reset();
             }
         }else if(gameState == 2){
             endScreen.tick();
@@ -89,11 +90,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(gameState == 0){
-            startScreen.touched(e, this);
+            startScreen.touched(e, this, mainGame);
         }else if(gameState == 1) {
             mainGame.touched(e);
         }else if(gameState == 2){
-            endScreen.touched(e);
+            endScreen.touched(e,this, mainGame);
         }
         return true;
     }
@@ -101,4 +102,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     void setGameState(int gameState){
         this.gameState = gameState;
     }
+    
 }
