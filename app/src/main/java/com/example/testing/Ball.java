@@ -27,10 +27,10 @@ class Ball {
 
     Ball(int radius, float startX, float startY, double startVelX, double startVelY){
         this.radius = radius;
-        x = 300f;
-        y = 300f;
-        velX = 5;
-        velY = 0;
+        x = startX;
+        y = startY;
+        velX = startVelX;
+        velY = startVelY;
         accel = 0.45/2160*height;
         newVelX = velX;
         color = (int)(Math.random()* ballColors.length);
@@ -43,11 +43,11 @@ class Ball {
         newVelY = velY + accel;
         if(x < radius/2.0){
             x = radius/2.0f;
-            newVelX = -velX/1.25;
+            newVelX = -velX;
         }
         if(x > width - radius/2){
             x = width - radius/2f;
-            newVelX = -velX/1.25;
+            newVelX = -velX;
         }
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
