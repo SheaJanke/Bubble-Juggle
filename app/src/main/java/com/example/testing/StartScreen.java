@@ -52,7 +52,7 @@ class StartScreen {
     void touched(MotionEvent e, GameView gameView, MainGame mainGame){
         if(balls.get(0).inArea((int)e.getX(), (int)e.getY())){
             mainGame.reset();
-            gameView.setGameState(1);
+            gameView.setGameState(3);
         }
     }
 }
