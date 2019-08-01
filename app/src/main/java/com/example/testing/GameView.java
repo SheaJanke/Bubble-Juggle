@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         thread = new MainThread(getHolder(), this);
         startScreen = new StartScreen();
         mainGame = new MainGame();
-        endScreen = new EndScreen();
+        endScreen = new EndScreen(context);
 
         setFocusable(true);
         startScreen.reset();
@@ -102,5 +102,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     void setGameState(int gameState){
         this.gameState = gameState;
     }
-    
+
 }

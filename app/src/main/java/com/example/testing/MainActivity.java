@@ -24,9 +24,8 @@ public class MainActivity extends Activity{
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mPreferences.edit();
 
-        mEditor.putString("key","test");
-        mEditor.commit();
+        //mEditor.putString("key","test");
+        //mEditor.commit();
         Toast.makeText(getApplicationContext(),mPreferences.getString("key", "default"),Toast.LENGTH_SHORT).show();
-
     }
 }

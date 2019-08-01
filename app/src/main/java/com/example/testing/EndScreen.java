@@ -1,5 +1,6 @@
 package com.example.testing;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -7,13 +8,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
 public class EndScreen {
    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+   private SharedPreferences mPreferences;
+   private SharedPreferences.Editor mEditor;
+   private Context context;
+
+   EndScreen(Context context){
+       this.context = context;
+   }
+
    private LinkedList<Ball> balls = new LinkedList<>();
    private Ball playBall = new Ball(width/6, (float)width/2, (float)height/2,5,0);
    void tick(){
@@ -38,6 +49,7 @@ public class EndScreen {
        paint.setTextSize((float)(100/1080.0) * width);
        paint.setColor(Color.BLACK);
        canvas.drawText("SCORE = " + score, (float)width/2, (float)height/4, paint);
+       canvas.drawText("HIGHSCORE = " + getHighScore(), (float)width/2, (float)height/3, paint);
        for(Ball ball:balls){
            ball.draw(canvas);
        }
@@ -53,13 +65,25 @@ public class EndScreen {
 
    void touched(MotionEvent e, GameView gameView, MainGame mainGame){
        if(balls.get(0).inArea((int)e.getX(),(int)e.getY())){
-           gameView.setGameState(1);
+           setHighScore(mainGame.getScore());
            mainGame.reset();
+           gameView.setGameState(1);
        }
    }
 
    void setHighScore(int highScore){
+       mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+       mEditor = mPreferences.edit();
+       mEditor.putInt("HighScore", highScore);
+       mEditor.commit();
 
+
+   }
+
+   int getHighScore(){
+       mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+       mEditor = mPreferences.edit();
+       return mPreferences.getInt("HighScore", 0);
    }
 
 }
