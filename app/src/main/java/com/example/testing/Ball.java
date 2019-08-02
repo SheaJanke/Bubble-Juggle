@@ -22,7 +22,7 @@ class Ball {
     private double newVelX;
     private double newVelY;
     private double accel;
-    private int[] ballColors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW};
+    private int[][] ballColors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private int color;
 
     Ball(int radius, float startX, float startY, double startVelX, double startVelY){
@@ -88,7 +88,8 @@ class Ball {
 
     void draw(Canvas canvas){
         Paint paint = new Paint();
-        paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,ballColors[color],Shader.TileMode.REPEAT));
+        int c = Color.argb(ballColors[color][0],ballColors[color][1],ballColors[color][2],ballColors[color][3]);
+        paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,c,Shader.TileMode.REPEAT));
         canvas.drawCircle(x,y,radius-5,paint);
 
     }
@@ -114,10 +115,6 @@ class Ball {
 
     float getY() {
         return y;
-    }
-
-    void setY(float y){
-        this.y = y;
     }
 
     void setNewVelY(double newVelY){

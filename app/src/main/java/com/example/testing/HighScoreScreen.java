@@ -8,8 +8,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.view.MotionEvent;
 
-public class HighScoreScreen {
+class HighScoreScreen {
     private String[] highScoreKeys = {"1","2","3","4","5"};
     private int[][] numberColors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -60,11 +61,11 @@ public class HighScoreScreen {
             setARGB(paint,numberColors[a]);
             canvas.drawRect(X(100), Y(300) + a*Y(250), X(900), Y(520) + a*Y(250), paint);
             paint.setColor(Color.BLACK);
-            canvas.drawText((a+1) + ". " + getHighScore(a),X(500), Y(445) + a*Y(250),paint);
+            canvas.drawText((a+1) + ". " + getHighScore(a),X(500), Y(450) + a*Y(250),paint);
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.WHITE);
             canvas.drawRect(X(100), Y(300) + a*Y(250), X(900), Y(520) + a*Y(250), paint);
-            canvas.drawText((a+1) + ". " + getHighScore(a),X(500), Y(445) + a*Y(250),paint);
+            canvas.drawText((a+1) + ". " + getHighScore(a),X(500), Y(450) + a*Y(250),paint);
             paint.setStyle(Paint.Style.FILL);
         }
         paint.setARGB(255,0,255,255);
@@ -75,23 +76,30 @@ public class HighScoreScreen {
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(X(300),Y(1650),X(700), Y(1850), paint);
-        canvas.drawText("BACK", X(500), Y(1810), paint);
+        canvas.drawText("BACK", X(500), Y(1815), paint);
     }
 
-    int getHighScore(int keyIndex){
+    private int getHighScore(int keyIndex){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return mPreferences.getInt(highScoreKeys[keyIndex],0);
     }
 
-    float X(float x){
+    private float X(float x){
         return x*width/1000;
     }
 
-    float Y(float y){
+    private float Y(float y){
         return y*height/2000;
     }
 
     private void setARGB(Paint paint, int[]argb){
         paint.setARGB(argb[0],argb[1],argb[2],argb[3]);
+    }
+
+    void touched(MotionEvent e, GameView gameView, EndScreen endScreen){
+        if(e.getY() > Y(1650) && e.getY() < Y(1850) && e.getX()> X(300) && e.getX() < X(700)){
+            gameView.setGameState(2);
+            endScreen.reset();
+        }
     }
 }

@@ -102,6 +102,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             mainGame.touched(e);
         }else if(gameState == 2){
             endScreen.touched(e,this, mainGame);
+        }else if(gameState == 3){
+            highScoreScreen.touched(e,this,endScreen);
         }
         return true;
     }
