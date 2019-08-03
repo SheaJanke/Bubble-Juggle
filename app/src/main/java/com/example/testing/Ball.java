@@ -17,21 +17,21 @@ class Ball {
     private long lastHit;
     private float x;
     private float y;
-    private double velX;
-    private double velY;
-    private double newVelX;
-    private double newVelY;
-    private double accel;
+    private float velX;
+    private float velY;
+    private float newVelX;
+    private float newVelY;
+    private float accel;
     private int[][] ballColors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private int color;
 
-    Ball(int radius, float startX, float startY, double startVelX, double startVelY){
+    Ball(int radius, float startX, float startY, float startVelX, float startVelY){
         this.radius = radius;
         x = startX;
         y = startY;
         velX = startVelX;
         velY = startVelY;
-        accel = 0.45/2160*height;
+        accel = Y(0.5f);
         newVelX = velX;
         color = (int)(Math.random()* ballColors.length);
         lastHit = System.currentTimeMillis();
@@ -41,18 +41,18 @@ class Ball {
         y += velY;
         x += velX;
         newVelY = velY + accel;
-        if(x < radius/2.0){
-            x = radius/2.0f;
+        if(x <= radius){
+            x = radius;
             newVelX = -velX;
         }
-        if(x > width - radius/2){
-            x = width - radius/2f;
+        if(x >= width - radius){
+            x = width - radius;
             newVelX = -velX;
         }
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
                 if(touchingBall(other) && color != other.getColor()){
-                    double totalVelY = Math.abs(velY) + Math.abs(other.getVelY());
+                    float totalVelY = Math.abs(velY) + (float)Math.abs(other.getVelY());
                     if(x > other.getX() && velX < 0){
                         newVelX = -velX/2;
                     }
@@ -64,9 +64,9 @@ class Ball {
                     }
                     if(y < other.getY() && velY > 0){
                         if(other.getVelY() < 0) {
-                            newVelY = -(3.0 / 5) * totalVelY;
+                            newVelY = -(3f / 5) * totalVelY;
                         }else{
-                            newVelY = -(3.0/5) * velY;
+                            newVelY = -(3f/5) * velY;
                         }
                     }
                     if(y > other.getY() && velY > 0){
@@ -90,7 +90,12 @@ class Ball {
         Paint paint = new Paint();
         int c = Color.argb(ballColors[color][0],ballColors[color][1],ballColors[color][2],ballColors[color][3]);
         paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,c,Shader.TileMode.REPEAT));
-        canvas.drawCircle(x,y,radius-5,paint);
+        canvas.drawCircle(x,y,radius,paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(5);
+        canvas.drawCircle(x,y,radius,paint);
+
 
     }
 
@@ -113,11 +118,19 @@ class Ball {
         return x;
     }
 
+    void setX(float X){
+        x = X;
+    }
+
+    void setY(float Y){
+        y = Y;
+    }
+
     float getY() {
         return y;
     }
 
-    void setNewVelY(double newVelY){
+    void setNewVelY(float newVelY){
         this.newVelY = newVelY;
     }
 
@@ -125,7 +138,7 @@ class Ball {
         return radius;
     }
 
-    double getVelY() {
+    float getVelY() {
         return velY;
     }
 
@@ -155,5 +168,13 @@ class Ball {
 
     boolean outOfBounds(){
         return y > height + radius;
+    }
+
+    private float X(float x){
+        return x*width/1000;
+    }
+
+    private float Y(float y){
+        return y*height/2000;
     }
 }

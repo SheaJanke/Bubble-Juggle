@@ -12,7 +12,7 @@ import java.util.LinkedList;
 class StartScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private Ball playBall = new Ball(width/6, 100f, 100f, 5.0, 0);
+    private Ball playBall = new Ball(width/6, 100f, 100f, 5f, 0);
     private LinkedList<Ball> balls = new LinkedList<>();
 
     void tick(){

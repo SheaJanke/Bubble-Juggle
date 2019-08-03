@@ -72,11 +72,11 @@ class HighScoreScreen {
         canvas.drawRect(X(300),Y(1650),X(700), Y(1850), paint);
         paint.setTextSize(X(120));
         paint.setColor(Color.BLACK);
-        canvas.drawText("BACK", X(500), Y(1810), paint);
+        canvas.drawText("BACK", X(500), Y(1800), paint);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(X(300),Y(1650),X(700), Y(1850), paint);
-        canvas.drawText("BACK", X(500), Y(1815), paint);
+        canvas.drawText("BACK", X(500), Y(1800), paint);
     }
 
     private int getHighScore(int keyIndex){

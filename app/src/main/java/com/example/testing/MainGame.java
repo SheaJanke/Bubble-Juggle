@@ -60,7 +60,7 @@ class MainGame {
 
     private boolean spawnClear(){
         for(Ball ball:balls){
-            if(ball.touchingBall(new Ball(width/8,(float)width/6, (float)height/6, 5.0, 0))){
+            if(ball.touchingBall(new Ball(width/8,(float)width/6, (float)height/6, 5f, 0))){
                 return false;
             }
         }
@@ -68,7 +68,7 @@ class MainGame {
     }
 
     void addBall(int radius){
-        Ball newBall = new Ball(radius,(float)width/6, (float)height/6, 5.0, 0);
+        Ball newBall = new Ball(radius,(float)width/6, (float)height/6, 5f, 0);
         balls.add(newBall);
     }
 

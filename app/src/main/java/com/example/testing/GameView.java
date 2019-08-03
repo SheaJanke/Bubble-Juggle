@@ -18,7 +18,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private HighScoreScreen highScoreScreen;
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private int gameState = 0;
+    private int gameState = 2;
     Context context;
 
     public GameView(Context context){
@@ -33,7 +33,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         highScoreScreen = new HighScoreScreen(context);
 
         setFocusable(true);
-        startScreen.reset();
+        //startScreen.reset();
+        endScreen.reset();
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
