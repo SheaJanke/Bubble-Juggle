@@ -15,6 +15,7 @@ class HighScoreScreen {
     private int[][] numberColors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int tickCounter = 0;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     private Context context;
@@ -40,7 +41,7 @@ class HighScoreScreen {
     }
 
     void tick(){
-
+        tickCounter++;
     }
 
     void render(Canvas canvas){
@@ -97,9 +98,13 @@ class HighScoreScreen {
     }
 
     void touched(MotionEvent e, GameView gameView, EndScreen endScreen){
-        if(e.getY() > Y(1650) && e.getY() < Y(1850) && e.getX()> X(300) && e.getX() < X(700)){
+        if(tickCounter > 20 && e.getY() > Y(1650) && e.getY() < Y(1850) && e.getX()> X(300) && e.getX() < X(700)){
             gameView.setGameState(2);
             endScreen.reset();
         }
+    }
+
+    void reset(){
+        tickCounter = 0;
     }
 }

@@ -31,7 +31,7 @@ class MainGame {
         }
         if (System.currentTimeMillis() - newBallTimer > 3000 && spawnClear()) {
             newBallTimer = System.currentTimeMillis();
-            addBall(width / 8);
+            addBall((int)X(125));
         }
         updateScore();
     }
@@ -42,25 +42,29 @@ class MainGame {
 
     void render(Canvas canvas){
        Paint paint = new Paint();
-        canvas.drawColor(Color.WHITE);
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(5);
-        paint.setTextSize((float)80/1080*width);
+        canvas.drawColor(Color.BLACK);
+        paint.setColor(Color.BLUE);
+        paint.setStrokeWidth(3);
+        paint.setTextSize(X(100));
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
-        canvas.drawText("Score = " + score, (float)width/2,(float)height/12,paint);
-        canvas.drawText("Lives = " + lives, (float)width/2, (float)height*11/12, paint);
+        canvas.drawText("Score = " + score, X(500),Y(150),paint);
+        paint.setColor(Color.RED);
+        canvas.drawText("Lives = " + lives, X(500), Y(1850), paint);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawText("Score = " + score, X(500),Y(150),paint);
+        canvas.drawText("Lives = " + lives, X(500), Y(1850), paint);
         paint.setPathEffect(new DashPathEffect(new float[]{10,5},0));
-        canvas.drawLine(0f,(float)(height/2) ,(float)width, (float)(height/2),paint);
+        canvas.drawLine(X(0),Y(1000) ,X(1000), Y(1000),paint);
         for(Ball ball: balls) {
             ball.draw(canvas);
         }
 
     }
-
     private boolean spawnClear(){
         for(Ball ball:balls){
-            if(ball.touchingBall(new Ball(width/8,(float)width/6, (float)height/6, 5f, 0))){
+            if(ball.touchingBall(new Ball((int)X(125),X(200), Y(200), X(5), 0))){
                 return false;
             }
         }
@@ -68,12 +72,12 @@ class MainGame {
     }
 
     void addBall(int radius){
-        Ball newBall = new Ball(radius,(float)width/6, (float)height/6, 5f, 0);
+        Ball newBall = (new Ball(radius,X(200), Y(200), X(5), 0));
         balls.add(newBall);
     }
 
     void touched(MotionEvent e){
-        if (e.getY() > height / 2) {
+        if (e.getY() > Y(1000)) {
             for (Ball ball : balls) {
                 if (ball.inArea((int) e.getX(), (int) e.getY())) {
                     ball.hit();
@@ -96,6 +100,14 @@ class MainGame {
         balls.clear();
         score = 0;
         lives = 5;
+    }
+
+    private float X(float x){
+        return x*width/1000;
+    }
+
+    private float Y(float y){
+        return y*height/2000;
     }
 
 }

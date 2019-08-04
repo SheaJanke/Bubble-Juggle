@@ -89,11 +89,12 @@ class Ball {
     void draw(Canvas canvas){
         Paint paint = new Paint();
         int c = Color.argb(ballColors[color][0],ballColors[color][1],ballColors[color][2],ballColors[color][3]);
-        paint.setShader(new RadialGradient(x,y,radius,Color.WHITE,c,Shader.TileMode.REPEAT));
+        paint.setShader(new RadialGradient(x,y,radius,Color.BLACK,c,Shader.TileMode.REPEAT));
         canvas.drawCircle(x,y,radius,paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(5);
+        paint.setShader(new Shader());
+        paint.setStrokeWidth(X(3));
         canvas.drawCircle(x,y,radius,paint);
 
 
