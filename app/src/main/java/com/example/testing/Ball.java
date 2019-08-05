@@ -52,28 +52,25 @@ class Ball {
         for(Ball other: others){
             if(other.getX() != x && other.getY() != y){
                 if(touchingBall(other) && color != other.getColor()){
-                    float totalVelY = Math.abs(velY) + (float)Math.abs(other.getVelY());
-                    if(x > other.getX() && velX < 0){
-                        newVelX = -velX/2;
+                    float totalVel = (float)(Math.sqrt(velX*velX+velY*velY) + Math.sqrt(other.getVelX()*other.getVelX()+other.getVelY()*other.getVelY()));
+                    float difX = Math.abs(x-other.getX());
+                    float difY = Math.abs(y-other.getY());
+                    double angle = Math.atan(difY/difX);
+                    if(x > other.getX() && y > other.getY()){
+                        newVelX+= Math.cos(angle)*(2/5f*totalVel);
+                        newVelY+= Math.sin(angle)*(1/5f*totalVel);
                     }
-                    if(x < other.getX() && velX > 0){
-                        newVelX = -velX/2;
+                    if(x > other.getX() && y < other.getY()){
+                        newVelX+= Math.cos(angle)*(2/5f*totalVel);
+                        newVelY-= Math.sin(angle)*(1.1f*totalVel);
                     }
-                    if(y > other.getY() && velY < 0){
-                        newVelY += (3.0/5)*totalVelY;
+                    if(x < other.getX() && y < other.getY()){
+                        newVelX-= Math.cos(angle)*(2/5f*totalVel);
+                        newVelY-= Math.sin(angle)*(1.1f*totalVel);
                     }
-                    if(y < other.getY() && velY > 0){
-                        if(other.getVelY() < 0) {
-                            newVelY = -(3f / 5) * totalVelY;
-                        }else{
-                            newVelY = -(3f/5) * velY;
-                        }
-                    }
-                    if(y > other.getY() && velY > 0){
-                        newVelY += (1.0/5.0)*other.getVelY();
-                    }
-                    if(y < other.getY() && velY < 0){
-                        newVelY += (3.0/5.0)*other.getVelY();
+                    if(x < other.getX() && y > other.getY()){
+                        newVelX-= Math.cos(angle)*(2/5f*totalVel);
+                        newVelY+= Math.sin(angle)*(1/5f*totalVel);
                     }
                     correctPosition(other);
                 }
@@ -141,6 +138,10 @@ class Ball {
 
     float getVelY() {
         return velY;
+    }
+
+    float getVelX(){
+        return velX;
     }
 
     private int getColor() {
