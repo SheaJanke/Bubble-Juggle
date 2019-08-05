@@ -108,20 +108,26 @@ public class EndScreen {
    }
 
 
-   void touched(MotionEvent e, GameView gameView, MainGame mainGame, StartScreen startScreen){
-       if(tickCounter > 20) {
+   void touched(MotionEvent e, GameView gameView, MainGame mainGame, StartScreen startScreen) {
+       if (tickCounter > 20) {
            if (balls.get(0).inArea((int) e.getX(), (int) e.getY())) {
                mainGame.reset();
                gameView.setGameState(1);
-           } else if (balls.get(1).inArea((int) e.getX(), (int) e.getY())) {
-               gameView.setGameState(3);
-           } else if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
-               startScreen.reset();
-               gameView.setGameState(0);
+           }
+           if (balls.size() >= 2) {
+               if (balls.get(1).inArea((int) e.getX(), (int) e.getY()))
+                   gameView.setGameState(3);
+           }
+           if (balls.size() >= 3) {
+               if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
+                   startScreen.reset();
+                   gameView.setGameState(0);
+               }
            }
        }
-
    }
+
+
     private float X(float x){
         return x*width/1000;
     }

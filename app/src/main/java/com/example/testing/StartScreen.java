@@ -95,14 +95,19 @@ class StartScreen {
     }
 
     void touched(MotionEvent e, GameView gameView, MainGame mainGame){
-        if(tickCounter > 20) {
+        if (tickCounter > 20) {
             if (balls.get(0).inArea((int) e.getX(), (int) e.getY())) {
                 mainGame.reset();
                 gameView.setGameState(1);
-            } else if (balls.get(1).inArea((int) e.getX(), (int) e.getY())) {
-                gameView.setGameState(3);
-            } else if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
+            }
+            if (balls.size() >= 2) {
+                if (balls.get(1).inArea((int) e.getX(), (int) e.getY()))
+                    gameView.setGameState(3);
+            }
+            if (balls.size() >= 3) {
+                if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
 
+                }
             }
         }
     }
