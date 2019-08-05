@@ -97,10 +97,10 @@ class HighScoreScreen {
         paint.setARGB(argb[0],argb[1],argb[2],argb[3]);
     }
 
-    void touched(MotionEvent e, GameView gameView, EndScreen endScreen){
+    void touched(MotionEvent e, GameView gameView, StartScreen startScreen){
         if(tickCounter > 20 && e.getY() > Y(1650) && e.getY() < Y(1850) && e.getX()> X(300) && e.getX() < X(700)){
-            gameView.setGameState(2);
-            endScreen.reset();
+            gameView.setGameState(0);
+            startScreen.reset();
         }
     }
 

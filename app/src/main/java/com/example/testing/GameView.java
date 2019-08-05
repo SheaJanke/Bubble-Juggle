@@ -2,6 +2,8 @@ package com.example.testing;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -20,6 +22,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int gameState = 0;
     Context context;
+    private Bitmap redX = BitmapFactory.decodeResource(getResources(), R.drawable.redx);
+    private Bitmap greyX = BitmapFactory.decodeResource(getResources(), R.drawable.greyx);
 
     public GameView(Context context){
         super(context);
@@ -28,7 +32,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         startScreen = new StartScreen();
-        mainGame = new MainGame();
+        mainGame = new MainGame(redX,greyX);
         endScreen = new EndScreen(context);
         highScoreScreen = new HighScoreScreen(context);
 
@@ -103,7 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }else if(gameState == 2){
             endScreen.touched(e,this, mainGame,startScreen);
         }else if(gameState == 3){
-            highScoreScreen.touched(e,this,endScreen);
+            highScoreScreen.touched(e,this,startScreen);
         }
         return true;
     }

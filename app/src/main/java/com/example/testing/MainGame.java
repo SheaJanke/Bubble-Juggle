@@ -1,12 +1,15 @@
 package com.example.testing;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 
 import java.util.LinkedList;
 
@@ -17,6 +20,14 @@ class MainGame {
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private LinkedList<Ball> balls = new LinkedList<>();
     private long newBallTimer = System.currentTimeMillis();
+    private Bitmap redX;
+    private Bitmap greyX;
+
+    MainGame(Bitmap redX, Bitmap greyX){
+        this.redX = Bitmap.createScaledBitmap(redX,(int)X(150),(int)Y(150),true);
+        this.greyX = Bitmap.createScaledBitmap(greyX,(int)X(150),(int)Y(150),true);
+
+    }
 
     void tick(){
         for (Ball ball : balls) {
@@ -49,12 +60,16 @@ class MainGame {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         canvas.drawText("Score = " + score, X(500),Y(150),paint);
-        paint.setColor(Color.RED);
-        canvas.drawText("Lives = " + lives, X(500), Y(1850), paint);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawText("Score = " + score, X(500),Y(150),paint);
-        canvas.drawText("Lives = " + lives, X(500), Y(1850), paint);
+        for(int a = 0; a < 5; a++){
+            if(a < 5-lives) {
+                canvas.drawBitmap(redX, X(125) + X(150*a), Y(1800),paint);
+            }else{
+                canvas.drawBitmap(greyX, X(125) + X(150*a), Y(1800),paint);
+            }
+        }
         paint.setPathEffect(new DashPathEffect(new float[]{10,5},0));
         canvas.drawLine(X(0),Y(1000) ,X(1000), Y(1000),paint);
         for(Ball ball: balls) {

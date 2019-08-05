@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 
 public class MainActivity extends Activity{
@@ -16,5 +17,7 @@ public class MainActivity extends Activity{
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gameView = new GameView(this);
         setContentView(gameView);
+
     }
+
 }
