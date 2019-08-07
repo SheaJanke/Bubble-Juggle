@@ -106,7 +106,7 @@ class StartScreen {
             }
             if (balls.size() >= 3) {
                 if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
-
+                    gameView.setGameState(4);
                 }
             }
         }
