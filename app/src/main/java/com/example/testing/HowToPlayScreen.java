@@ -7,12 +7,13 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 
-public class HowToPlayScreen {
+class HowToPlayScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int tickCounter = 0;
 
     void tick(){
-
+        tickCounter++;
     }
     void render(Canvas canvas){
         canvas.drawColor(Color.BLACK);
@@ -45,22 +46,26 @@ public class HowToPlayScreen {
         canvas.drawText("faster when more bubbles", X(500), Y(1260),paint);
         canvas.drawText("are on the screen.", X(500), Y(1340),paint);
         paint.setARGB(255,0,0,255);
-        canvas.drawText("You have 5 lives!", X(500), Y(1480),paint);
+        paint.setTextSize(X(100));
+        canvas.drawText("You have 5 lives!", X(500), Y(1550),paint);
         paint.setARGB(255,0,255,255);
         canvas.drawRect(X(300),Y(1650),X(700), Y(1850), paint);
         paint.setTextSize(X(120));
         paint.setColor(Color.BLACK);
-        canvas.drawText("BACK", X(500), Y(1850), paint);
+        canvas.drawText("BACK", X(500), Y(1800), paint);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(X(300),Y(1650),X(700), Y(1850), paint);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("BACK", X(500), Y(1850), paint);
+        canvas.drawText("BACK", X(500), Y(1800), paint);
 
 
     }
-    void touched(MotionEvent e){
-
+    void touched(MotionEvent e, GameView gameView, StartScreen startScreen){
+        if(tickCounter > 20 && e.getY() > Y(1650) && e.getY() < Y(1850) && e.getX()> X(300) && e.getX() < X(700)){
+            gameView.setGameState(0);
+            startScreen.reset();
+        }
     }
 
     private float X(float x){

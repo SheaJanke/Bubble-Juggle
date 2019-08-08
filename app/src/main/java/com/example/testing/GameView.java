@@ -1,7 +1,5 @@
 package com.example.testing;
-
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,12 +17,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private EndScreen endScreen;
     private HighScoreScreen highScoreScreen;
     private HowToPlayScreen howToPlayScreen;
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int gameState = 0;
     Context context;
-    private Bitmap redX = BitmapFactory.decodeResource(getResources(), R.drawable.redx);
-    private Bitmap greyX = BitmapFactory.decodeResource(getResources(), R.drawable.greyx);
+    Bitmap redX = BitmapFactory.decodeResource(getResources(), R.drawable.redx);
+    Bitmap greyX = BitmapFactory.decodeResource(getResources(), R.drawable.greyx);
 
     public GameView(Context context){
         super(context);
@@ -107,15 +103,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(gameState == 0){
-            startScreen.touched(e, this, mainGame);
+            startScreen.touched(e, this, mainGame,highScoreScreen);
         }else if(gameState == 1) {
             mainGame.touched(e);
         }else if(gameState == 2){
-            endScreen.touched(e,this, mainGame,startScreen);
+            endScreen.touched(e,this, mainGame,startScreen,highScoreScreen);
         }else if(gameState == 3){
             highScoreScreen.touched(e,this,startScreen);
         }else if(gameState == 4){
-            howToPlayScreen.touched(e);
+            howToPlayScreen.touched(e,this,startScreen);
         }
         return true;
     }

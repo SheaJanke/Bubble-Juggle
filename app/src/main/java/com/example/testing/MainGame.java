@@ -2,14 +2,12 @@ package com.example.testing;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 
 import java.util.LinkedList;
 
@@ -86,7 +84,7 @@ class MainGame {
         return true;
     }
 
-    void addBall(int radius){
+    private void addBall(int radius){
         Ball newBall = (new Ball(radius,X(200), Y(200), X(5), 0));
         balls.add(newBall);
     }

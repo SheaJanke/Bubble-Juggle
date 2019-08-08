@@ -14,7 +14,6 @@ class StartScreen {
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int[][] ballColors = {{255,255,0,0},{255,0,128,0},{255,0,0,255}};
     private int tickCounter = 0;
-    private Ball playBall;
     private Ball HighScoreBall;
     private Ball menuBall;
     private LinkedList<Ball> balls = new LinkedList<>();
@@ -68,7 +67,8 @@ class StartScreen {
             canvas.drawText("HIGH", balls.get(1).getX(),balls.get(1).getY()-Y(10),paint);
             canvas.drawText("SCORES", balls.get(1).getX(),balls.get(1).getY()+Y(60),paint);
             if(balls.size() >=3){
-                canvas.drawText("TUTORIAL", balls.get(2).getX(),balls.get(2).getY()+Y(30),paint);
+                canvas.drawText("HOW TO", balls.get(2).getX(),balls.get(2).getY()+Y(10),paint);
+                canvas.drawText("PLAY", balls.get(2).getX(),balls.get(2).getY()+Y(80),paint);
             }
         }
         paint.setStyle(Paint.Style.STROKE);
@@ -80,7 +80,8 @@ class StartScreen {
             canvas.drawText("HIGH", balls.get(1).getX(),balls.get(1).getY()-Y(10),paint);
             canvas.drawText("SCORES", balls.get(1).getX(),balls.get(1).getY()+Y(60),paint);
             if(balls.size() >=3){
-                canvas.drawText("TUTORIAL", balls.get(2).getX(),balls.get(2).getY()+Y(30),paint);
+                canvas.drawText("HOW TO", balls.get(2).getX(),balls.get(2).getY()+Y(10),paint);
+                canvas.drawText("PLAY", balls.get(2).getX(),balls.get(2).getY()+Y(80),paint);
             }
         }
     }
@@ -88,13 +89,13 @@ class StartScreen {
     void reset(){
         balls.clear();
         tickCounter = 0;
-        playBall = new Ball((int)X(160), X(500),Y(1000),X(11.45f),0);
+        Ball playBall = new Ball((int)X(160), X(500),Y(1000),X(11.45f),0);
         HighScoreBall = new Ball((int)X(160), X(500),Y(1000),X(11.45f),0);
         menuBall = new Ball((int)X(160), X(500),Y(1000),X(11.45f),0);
         balls.add(playBall);
     }
 
-    void touched(MotionEvent e, GameView gameView, MainGame mainGame){
+    void touched(MotionEvent e, GameView gameView, MainGame mainGame, HighScoreScreen highScoreScreen){
         if (tickCounter > 20) {
             if (balls.get(0).inArea((int) e.getX(), (int) e.getY())) {
                 mainGame.reset();
@@ -103,6 +104,7 @@ class StartScreen {
             if (balls.size() >= 2) {
                 if (balls.get(1).inArea((int) e.getX(), (int) e.getY()))
                     gameView.setGameState(3);
+                    highScoreScreen.reset();
             }
             if (balls.size() >= 3) {
                 if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {

@@ -107,8 +107,8 @@ class Ball {
     void hit(){
         if(System.currentTimeMillis()-lastHit > 300) {
             lastHit = System.currentTimeMillis();
-            velX += (Math.random() - 0.5) * 25;
-            velY = -((float)30/2160*height);
+            velX += (Math.random() - 0.5) * X(25);
+            velY = -(Y(30));
         }
     }
 
@@ -140,7 +140,7 @@ class Ball {
         return velY;
     }
 
-    float getVelX(){
+    private float getVelX(){
         return velX;
     }
 

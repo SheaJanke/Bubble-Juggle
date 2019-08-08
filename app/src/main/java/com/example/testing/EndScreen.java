@@ -1,23 +1,19 @@
 package com.example.testing;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 
 import java.util.LinkedList;
 
-public class EndScreen {
+class EndScreen {
    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
    private int[][] ballColors = {{255,255,0,0},{255,0,128,0},{255,0,0,255}};
-   private SharedPreferences mPreferences;
-   private SharedPreferences.Editor mEditor;
    private Context context;
    private int tickCounter = 0;
 
@@ -108,7 +104,7 @@ public class EndScreen {
    }
 
 
-   void touched(MotionEvent e, GameView gameView, MainGame mainGame, StartScreen startScreen) {
+   void touched(MotionEvent e, GameView gameView, MainGame mainGame, StartScreen startScreen, HighScoreScreen highScoreScreen) {
        if (tickCounter > 20) {
            if (balls.get(0).inArea((int) e.getX(), (int) e.getY())) {
                mainGame.reset();
@@ -117,6 +113,7 @@ public class EndScreen {
            if (balls.size() >= 2) {
                if (balls.get(1).inArea((int) e.getX(), (int) e.getY()))
                    gameView.setGameState(3);
+                   highScoreScreen.reset();
            }
            if (balls.size() >= 3) {
                if (balls.get(2).inArea((int) e.getX(), (int) e.getY())) {
