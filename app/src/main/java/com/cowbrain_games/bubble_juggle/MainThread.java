@@ -1,9 +1,7 @@
-package com.example.testing;
+package com.cowbrain_games.bubble_juggle;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
-
-import java.util.LinkedList;
 
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;

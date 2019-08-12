@@ -1,4 +1,4 @@
-package com.example.testing;
+package com.cowbrain_games.bubble_juggle;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
