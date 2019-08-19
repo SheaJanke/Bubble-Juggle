@@ -91,7 +91,7 @@ class Ball {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.WHITE);
         paint.setShader(new Shader());
-        paint.setStrokeWidth(X(3));
+        paint.setStrokeWidth(X(5));
         canvas.drawCircle(x,y,radius,paint);
 
 
@@ -116,27 +116,15 @@ class Ball {
         return x;
     }
 
-    void setX(float X){
-        x = X;
-    }
-
-    void setY(float Y){
-        y = Y;
-    }
-
     float getY() {
         return y;
-    }
-
-    void setNewVelY(float newVelY){
-        this.newVelY = newVelY;
     }
 
     int getRadius(){
         return radius;
     }
 
-    float getVelY() {
+    private float getVelY() {
         return velY;
     }
 

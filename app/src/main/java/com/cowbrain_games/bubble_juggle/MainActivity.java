@@ -19,4 +19,11 @@ public class MainActivity extends Activity{
 
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        gameView = new GameView(this);
+        setContentView(gameView);
+    }
+
 }

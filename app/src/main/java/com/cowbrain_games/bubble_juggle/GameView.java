@@ -30,7 +30,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         thread = new MainThread(getHolder(), this);
         startScreen = new StartScreen();
         mainGame = new MainGame(redX,greyX);
-        endScreen = new EndScreen(context);
+        endScreen = new EndScreen();
         highScoreScreen = new HighScoreScreen(context);
         howToPlayScreen = new HowToPlayScreen();
 

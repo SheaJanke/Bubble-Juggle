@@ -52,13 +52,13 @@ class MainGame {
     void render(Canvas canvas){
        Paint paint = new Paint();
         canvas.drawColor(Color.BLACK);
-        paint.setColor(Color.BLUE);
-        paint.setStrokeWidth(3);
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(X(5));
         paint.setTextSize(X(100));
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         canvas.drawText("Score = " + score, X(500),Y(150),paint);
-        paint.setColor(Color.WHITE);
+        paint.setARGB(255,212,175,55);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawText("Score = " + score, X(500),Y(150),paint);
         for(int a = 0; a < 5; a++){
